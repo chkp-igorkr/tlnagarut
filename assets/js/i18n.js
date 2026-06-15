@@ -66,6 +66,7 @@ const I18N = {
     "services.restoreBody":
       "Bringing tired or inherited furniture back to life — repairs, refinishing and sympathetic alterations.",
 
+    "projects.metaTitle": "Projects — TL Nagarut",
     "projects.eyebrow": "Selected work",
     "projects.title": "Recent projects",
     "projects.intro":
@@ -141,6 +142,7 @@ const I18N = {
     "services.restoreBody":
       "החזרת רהיטים ישנים או מורשת לחיים — תיקונים, חידוש גימור והתאמות עדינות.",
 
+    "projects.metaTitle": "פרויקטים — TL נגרות",
     "projects.eyebrow": "מבחר עבודות",
     "projects.title": "פרויקטים אחרונים",
     "projects.intro": "כמה עבודות אחרונות. עוד באינסטגרם —",

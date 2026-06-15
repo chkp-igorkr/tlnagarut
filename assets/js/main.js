@@ -8,6 +8,11 @@
   var STORAGE_KEY = "tln-lang";
   var current = "en";
 
+  // The site has two pages (index.html + projects.html) sharing this script,
+  // so some elements exist only on one page — these helpers stay null-safe.
+  function byId(id) { return document.getElementById(id); }
+  function setText(id, text) { var el = byId(id); if (el) el.textContent = text; }
+
   function t(key) {
     var dict = I18N[current] || I18N.en;
     return key in dict ? dict[key] : I18N.en[key] || "";
@@ -30,26 +35,24 @@
 
   // ---- Fill contact details (shared, not per-language) ----
   function applyContact() {
-    var phone = document.getElementById("contact-phone");
-    phone.textContent = CONTACT.phoneDisplay;
-    phone.href = "tel:" + CONTACT.phoneHref;
+    var phone = byId("contact-phone");
+    if (phone) { phone.textContent = CONTACT.phoneDisplay; phone.href = "tel:" + CONTACT.phoneHref; }
 
-    var email = document.getElementById("contact-email");
-    email.textContent = CONTACT.email;
-    email.href = "mailto:" + CONTACT.email;
+    var email = byId("contact-email");
+    if (email) { email.textContent = CONTACT.email; email.href = "mailto:" + CONTACT.email; }
 
-    document.getElementById("contact-location").textContent = CONTACT.city;
+    setText("contact-location", CONTACT.city);
 
-    var ig = document.getElementById("contact-instagram");
-    ig.textContent = CONTACT.instagramHandle;
-    ig.href = CONTACT.instagram;
+    var ig = byId("contact-instagram");
+    if (ig) { ig.textContent = CONTACT.instagramHandle; ig.href = CONTACT.instagram; }
 
-    var igInline = document.getElementById("ig-inline");
-    igInline.textContent = CONTACT.instagramHandle;
-    igInline.href = CONTACT.instagram;
+    var igInline = byId("ig-inline");
+    if (igInline) { igInline.textContent = CONTACT.instagramHandle; igInline.href = CONTACT.instagram; }
 
-    document.getElementById("contact-email-btn").href = "mailto:" + CONTACT.email;
-    document.getElementById("footer-name").textContent = CONTACT.name;
+    var emailBtn = byId("contact-email-btn");
+    if (emailBtn) emailBtn.href = "mailto:" + CONTACT.email;
+
+    setText("footer-name", CONTACT.name);
   }
 
   // ---- Render project cards ----
@@ -60,7 +63,8 @@
   }
 
   function renderProjects() {
-    var grid = document.getElementById("projects-grid");
+    var grid = byId("projects-grid");
+    if (!grid || typeof PROJECTS === "undefined") return;
     grid.innerHTML = "";
     PROJECTS.forEach(function (p, index) {
       var loc = (p[current] && p[current].title) ? p[current] : p.en;
@@ -87,13 +91,13 @@
 
   // ---- Workshop section (content from workshop.js) ----
   function renderWorkshop() {
-    if (typeof WORKSHOP === "undefined") return;
+    if (typeof WORKSHOP === "undefined" || !byId("ws-features")) return;
     var w = WORKSHOP[current] || WORKSHOP.en;
-    document.getElementById("ws-eyebrow").textContent = w.eyebrow || "";
-    document.getElementById("ws-title").textContent = w.title || "";
-    document.getElementById("ws-intro").textContent = w.intro || "";
+    setText("ws-eyebrow", w.eyebrow || "");
+    setText("ws-title", w.title || "");
+    setText("ws-intro", w.intro || "");
 
-    var feats = document.getElementById("ws-features");
+    var feats = byId("ws-features");
     feats.innerHTML = "";
     (w.features || []).forEach(function (f) {
       var card = document.createElement("article");
@@ -127,6 +131,7 @@
   var galPhotos = [], galTitle = "", galPhoto = 0;
 
   function openGallery(photos, title, photoIndex) {
+    if (!galleryEl) return;
     galPhotos = photos && photos.length ? photos : [];
     galTitle = title || "";
     galPhoto = photoIndex || 0;
@@ -134,7 +139,7 @@
     showPhoto();
     galleryEl.hidden = false;
     document.body.style.overflow = "hidden";
-    document.getElementById("gallery-close").focus();
+    byId("gallery-close").focus();
   }
 
   function closeGallery() {
@@ -154,12 +159,13 @@
   function step(delta) { galPhoto += delta; showPhoto(); }
 
   function setupGallery() {
-    galleryEl = document.getElementById("gallery");
-    imgEl = document.getElementById("gallery-img");
-    captionEl = document.getElementById("gallery-caption");
-    document.getElementById("gallery-close").addEventListener("click", closeGallery);
-    document.getElementById("gallery-prev").addEventListener("click", function () { step(-1); });
-    document.getElementById("gallery-next").addEventListener("click", function () { step(1); });
+    galleryEl = byId("gallery");
+    if (!galleryEl) return;
+    imgEl = byId("gallery-img");
+    captionEl = byId("gallery-caption");
+    byId("gallery-close").addEventListener("click", closeGallery);
+    byId("gallery-prev").addEventListener("click", function () { step(-1); });
+    byId("gallery-next").addEventListener("click", function () { step(1); });
     galleryEl.addEventListener("click", function (e) {
       if (e.target === galleryEl) closeGallery(); // click backdrop to close
     });
@@ -187,14 +193,15 @@
     var saved;
     try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
     setLanguage(saved || "en");
-    document.getElementById("lang-toggle").addEventListener("click", function () {
+    var toggle = byId("lang-toggle");
+    if (toggle) toggle.addEventListener("click", function () {
       setLanguage(current === "en" ? "he" : "en");
     });
   }
 
   // ---- Boot ----
   document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("year").textContent = String(new Date().getFullYear());
+    setText("year", String(new Date().getFullYear()));
     applyContact();
     setupGallery();
     initLanguage();
