@@ -384,6 +384,10 @@ html[dir="rtl"] .gallery-next { transform: translateY(-50%) scaleX(-1); }
   }
   .nav-links a:first-child { border-top: none; }
 
+  /* Hamburger sits at the far (inline-end) edge; language button before it. */
+  .lang-toggle { margin-inline-start: auto; }
+  .nav-toggle { margin-inline-start: 0; order: 1; }
+
   .cards, .projects-grid { grid-template-columns: 1fr; }
   .section { padding-block: 60px; }
   .hero-content { padding-block: 64px; }
