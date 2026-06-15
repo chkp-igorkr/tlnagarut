@@ -199,11 +199,31 @@
     });
   }
 
+  // ---- Mobile nav (hamburger) ----
+  function setupNav() {
+    var toggle = byId("nav-toggle");
+    var links = byId("nav-links");
+    if (!toggle || !links) return;
+    function close() {
+      links.classList.remove("open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+    toggle.addEventListener("click", function () {
+      var open = links.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    // Tapping a link (on the current page or another) closes the panel.
+    links.addEventListener("click", function (e) {
+      if (e.target.closest("a")) close();
+    });
+  }
+
   // ---- Boot ----
   document.addEventListener("DOMContentLoaded", function () {
     setText("year", String(new Date().getFullYear()));
     applyContact();
     setupGallery();
+    setupNav();
     initLanguage();
   });
 })();

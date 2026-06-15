@@ -30,13 +30,19 @@
       <div class="container nav">
         <a class="brand" href="#top" data-i18n="nav.brand">TL Nagarut</a>
 
-        <nav class="nav-links" aria-label="Primary">
+        <nav class="nav-links" id="nav-links" aria-label="Primary">
           <a href="#about" data-i18n="nav.about">About</a>
           <a href="#services" data-i18n="nav.services">Services</a>
           <a href="#contact" data-i18n="nav.contact">Contact</a>
           <a href="workshop.html" data-i18n="nav.workshop">Workshop</a>
           <a href="projects.html" data-i18n="nav.projects">Projects</a>
         </nav>
+
+        <button id="nav-toggle" class="nav-toggle" type="button"
+          aria-expanded="false" aria-controls="nav-links"
+          data-i18n-aria="nav.menuAria" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
 
         <button id="lang-toggle" class="lang-toggle" type="button"
           data-i18n="nav.langToggle" data-i18n-aria="nav.langToggleAria"
